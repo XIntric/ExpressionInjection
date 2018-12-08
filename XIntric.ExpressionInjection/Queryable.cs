@@ -5,7 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace ExpressionInjection
+namespace XIntric.ExpressionInjection
 {
 
     internal class Queryable<T> : IOrderedQueryable<T>

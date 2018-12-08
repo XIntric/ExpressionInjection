@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using System.Threading;
 
-namespace ExpressionInjection
+namespace XIntric.ExpressionInjection
 {
     public static class Injector
     {

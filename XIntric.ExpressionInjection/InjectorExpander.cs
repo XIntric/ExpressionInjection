@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 
-namespace ExpressionInjection
+namespace XIntric.ExpressionInjection
 {
     public class InjectorExpander : ExpressionVisitor, Injector.ITrapper
     {
