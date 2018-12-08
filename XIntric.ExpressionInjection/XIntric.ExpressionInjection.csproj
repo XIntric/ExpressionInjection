@@ -1,12 +1,22 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <TargetFrameworks>netstandard1.1;netstandard1.2;netstandard1.3;netstandard1.4;netstandard1.5;netstandard1.6;netstandard2.0</TargetFrameworks>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>0.1.0</Version>
     <Authors>Micael Fredriksson</Authors>
     <Company />
     <Product>ExpressionInjection</Product>
+    <AssemblyVersion>0.0.1.0</AssemblyVersion>
+    <FileVersion>0.0.1.0</FileVersion>
+    <PackageLicenseUrl>https://github.com/XIntric/ExpressionInjection/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/XIntric/ExpressionInjection</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/XIntric/ExpressionInjection</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>Expression Injection EntityFramework Linq2Sql Sql</PackageTags>
+    <SignAssembly>false</SignAssembly>
+    <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 
 </Project>
