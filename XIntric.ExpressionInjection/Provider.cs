@@ -24,14 +24,16 @@ namespace XIntric.ExpressionInjection
 
         public object Execute(Expression expression)
         {
-            var modified = expression;
-            return SourceProvider.Execute(expression);
+            var expander = new InjectorExpander();
+            var modified = expander.Visit(expression);
+            return SourceProvider.Execute(modified);
         }
 
         public TResult Execute<TResult>(Expression expression)
         {
-            var modified = expression;
-            return SourceProvider.Execute<TResult>(expression);
+            var expander = new InjectorExpander();
+            var modified = expander.Visit(expression);
+            return SourceProvider.Execute<TResult>(modified);
         }
     }
 }
