@@ -23,6 +23,8 @@ namespace XIntric.ExpressionInjection
         public static TRet Inject<T1, T2, T3, T4, TRet>(T1 p1, T2 p2, T3 p3, T4 p4, Expression<Func<T1, T2, T3, T4, TRet>> expr)
             => (TRet)Trap.Value.Register(expr, p1, p2, p3, p4);
 
+        public static TRet Inject<TRet>(LambdaExpression expr, params object[] args)
+            => (TRet)Trap.Value.Register(expr, args);
 
 
         internal static ThreadLocal<ITrapper> Trap = new ThreadLocal<ITrapper>(() => new DirectRunner());
