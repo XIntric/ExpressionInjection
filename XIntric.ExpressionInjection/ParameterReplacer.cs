@@ -20,5 +20,13 @@ namespace XIntric.ExpressionInjection
                 return replacement;
             return base.VisitParameter(node);
         }
+
+        protected override Expression VisitMember(MemberExpression node)
+        {
+            return base.VisitMember(node);
+        }
+
+
+
     }
 }

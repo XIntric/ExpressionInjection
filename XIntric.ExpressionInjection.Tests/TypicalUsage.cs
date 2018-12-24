@@ -30,8 +30,8 @@ namespace XIntric.ExpressionInjection.Tests
         {
             [Injectable]
             public static bool IsOverbooked(this Airplane airplane)
-                => Injector.Inject(airplane, a =>
-                 a.Flights.Any(left => a.Flights.Any(right =>
+                => Injector.Inject(() =>
+                 airplane.Flights.Any(left => airplane.Flights.Any(right =>
                     left != right &&
                      ((left.Starts >= right.Starts && left.Starts < right.Ends)
                      || (right.Starts >= left.Starts && right.Starts < left.Ends)))));

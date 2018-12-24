@@ -7,11 +7,29 @@ using System.Text;
 
 namespace XIntric.ExpressionInjection
 {
+    public interface IQueryable : System.Linq.IQueryable
+    {
+        new IQueryProvider Provider { get; }
+    }
 
-    internal class Queryable<T> : IOrderedQueryable<T>
+    public interface IOrderedQueryable : IQueryable, System.Linq.IOrderedQueryable
+    {
+    }
+
+
+    public interface IQueryable<T> : IQueryable, System.Linq.IQueryable<T>
+    {
+    }
+
+    public interface IOrderedQueryable<T> : IQueryable<T>, IOrderedQueryable, System.Linq.IOrderedQueryable<T>
     {
 
-        public Queryable(Provider p, Expression e)
+    }
+
+    public class Queryable<T> : IOrderedQueryable<T>
+    {
+
+        public Queryable(IQueryProvider p, Expression e)
         {
             Provider = p;
             Expression = e;
@@ -22,9 +40,9 @@ namespace XIntric.ExpressionInjection
 
         public Expression Expression { get; }
 
-        public Provider Provider { get; }
+        public IQueryProvider Provider { get; }
 
-        IQueryProvider IQueryable.Provider => Provider;
+        System.Linq.IQueryProvider System.Linq.IQueryable.Provider => Provider;
 
         public IEnumerator<T> GetEnumerator()
         {
@@ -35,7 +53,7 @@ namespace XIntric.ExpressionInjection
 
         public Expression GetExpandedExpression()
         {
-            var expander = new InjectorExpander();
+            var expander = new InjectorTrapper();
             return expander.Visit(Expression);
         }
 

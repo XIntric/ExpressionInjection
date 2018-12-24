@@ -2,18 +2,18 @@ using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
-namespace XIntric.ExpressionInjection.UnitTest
+namespace XIntric.ExpressionInjection.Tests
 {
     public class InjectedMethodBehaviour
     {
 
         [Injectable]
         public static bool IsEven(int value)
-            => Injector.Inject(value, v => (v % 2) == 0);
+            => Injector.Inject(() => (value % 2) == 0);
 
         [Injectable]
         public static bool IsHigherThanAndEven(int value, int threshold)
-            => Injector.Inject(value, threshold, (v, t) => IsEven(v) && v > t);
+            => Injector.Inject(() => IsEven(value) && value > threshold);
 
 
         List<int> IntValues = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 };
@@ -28,7 +28,7 @@ namespace XIntric.ExpressionInjection.UnitTest
                 .Where(x => IsEven(x));
 
             Assert.True(q.All(x => (x % 2) == 0));
-            Assert.DoesNotContain("IsEven", q.GetExpandedExpression().ToString());
+            Assert.DoesNotContain("IsEven", q.GetInjectedExpression().ToString());
 
         }
 
@@ -41,7 +41,7 @@ namespace XIntric.ExpressionInjection.UnitTest
                 .Where(x => IsEven(x));
 
             Assert.True(q.All(x => (x % 2) == 0));
-            Assert.Contains("IsEven", q.GetExpandedExpression().ToString());
+            Assert.Contains("IsEven", q.GetInjectedExpression().ToString());
 
         }
 
@@ -53,8 +53,7 @@ namespace XIntric.ExpressionInjection.UnitTest
                 .AsQueryable()
                 .EnableInjection()
                 .Where(x => IsHigherThanAndEven(x, 5));
-
-            Assert.DoesNotContain("IsEven", q.GetExpandedExpression().ToString());
+            Assert.DoesNotContain("IsEven", q.GetInjectedExpression().ToString());
 
         }
 

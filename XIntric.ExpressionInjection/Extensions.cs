@@ -10,15 +10,22 @@ namespace System.Linq
     public static class ExpressionInjectionExtensions
     {
 
-        public static IQueryable<T> EnableInjection<T>(this IQueryable<T> q)
+        public static XIntric.ExpressionInjection.IQueryable<T> EnableInjection<T>(this IQueryable<T> q)
         {
-            return new XIntric.ExpressionInjection.Queryable<T>(new XIntric.ExpressionInjection.Provider(q.Provider), q.Expression);
+            var provider = new XIntric.ExpressionInjection.QueryProvider(q.Provider);
+            return provider.CreateQuery<T>(q.Expression);
         }
 
-        public static Expression GetExpandedExpression<T>(this IQueryable<T> q)
+        public static Expression GetInjectedExpression<T>(this IQueryable<T> q)
         {
             var eq = q as Queryable<T>;
             return eq?.GetExpandedExpression() ?? q.Expression;
+        }
+
+        public static IQueryable<T> Inject<T>(this IQueryable<T> q)
+        {
+            if (!(q is Queryable<T> eq)) return q;
+            return eq.Provider.CreateQuery<T>(q.GetInjectedExpression());
         }
 
     }
