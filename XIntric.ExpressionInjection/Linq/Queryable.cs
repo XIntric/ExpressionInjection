@@ -5,7 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace XIntric.ExpressionInjection
+namespace XIntric.ExpressionInjection.Linq
 {
     public interface IQueryable : System.Linq.IQueryable
     {

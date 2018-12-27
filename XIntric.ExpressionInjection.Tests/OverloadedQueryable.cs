@@ -10,15 +10,15 @@ namespace XIntric.ExpressionInjection.Tests
     public class OverloadedQueryable
     {
 
-        class MyQueryable<T> : Queryable<T>
+        class MyQueryable<T> : Linq.Queryable<T>
         {
-            public MyQueryable(IQueryProvider p, Expression expr)
+            public MyQueryable(Linq.IQueryProvider p, Expression expr)
                 : base(p, expr) { }
         }
 
-        static IQueryable<T> WithMyQueryable<T>(IQueryable<T> q)
+        static Linq.IQueryable<T> WithMyQueryable<T>(Linq.IQueryable<T> q)
             => q.Provider.WithFactory((p, t, e) =>
-            (IQueryable<T>)Activator.CreateInstance(
+            (Linq.IQueryable<T>)Activator.CreateInstance(
                     typeof(MyQueryable<>).MakeGenericType(t),
                     p, e)).CreateQuery<T>(q.Expression);
 

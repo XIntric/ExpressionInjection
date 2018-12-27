@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace XIntric.ExpressionInjection
+namespace XIntric.ExpressionInjection.Linq
 {
     public interface IQueryProvider : System.Linq.IQueryProvider
     {
