@@ -73,22 +73,38 @@ namespace XIntric.ExpressionInjection
 
                 ReplacementExpression = null;
 
-                var replacer = new DelegatedReplacer(membernode =>
-                {
-                    var candidate = parameterinfo
-                        .Where(x => x.Parameter.Name == membernode.Member.Name)
-                        .FirstOrDefault();
-                    if (candidate == null) return null;
+                var replacer = new DelegatedReplacer()
+                    .ReplaceMember(membernode =>
+                    {
+                        var candidate = parameterinfo
+                            .Where(x => x.Parameter.Name == membernode.Member.Name)
+                            .FirstOrDefault();
+                        if (candidate == null) return null;
 
-                    if (candidate.EvalOnInject)
+                        if (candidate.EvalOnInject)
+                        {
+                            return Expression.Constant(candidate.EvaluationArgument, candidate.Parameter.ParameterType);
+                        }
+                        else
+                        {
+                            return candidate.Argument;
+                        }
+                    })
+                    .ReplaceParameter(paramnode =>
                     {
-                        return Expression.Constant(candidate.EvaluationArgument, candidate.Parameter.ParameterType);
-                    }
-                    else
-                    {
-                        return candidate.Argument;
-                    }
-                });
+                        var candidate = parameterinfo.SingleOrDefault(x => x.Parameter.Name == paramnode.Name);
+                        if (candidate == null) return null;
+                        if (candidate.EvalOnInject)
+                        {
+                            return Expression.Constant(candidate.EvaluationArgument, candidate.Parameter.ParameterType);
+                        }
+                        else
+                        {
+                            return candidate.Argument;
+                        }
+                    })
+                
+                ;
 
                 replacementbody = replacer.Visit(replacementbody);
 
