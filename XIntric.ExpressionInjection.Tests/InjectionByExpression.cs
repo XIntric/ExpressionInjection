@@ -22,15 +22,21 @@ namespace XIntric.ExpressionInjection.Tests
         }
 
         [Fact]
-        public void CanBindParametersCorrectly()
+        public void Query_WithLambdaExpression_BindsParametersCorrectly()
         {
             var q = Enumerable.Range(0, 10)
                 .AsQueryable()
                 .EnableInjection()
                 .Where(x => GreaterThan(x, 4));
-
             Assert.All(q, v => Assert.True(v > 4));
+        }
 
+        [Fact]
+        public void Direct_WithLambdaExpression_BindsParametersCorrectly()
+        {
+            var q = Enumerable.Range(0, 10)
+                .Where(x => GreaterThan(x, 4));
+            Assert.All(q, v => Assert.True(v > 4));
         }
 
     }
