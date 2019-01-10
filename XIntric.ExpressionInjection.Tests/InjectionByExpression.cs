@@ -12,12 +12,12 @@ namespace XIntric.ExpressionInjection.Tests
 
         [Injectable]
         static bool GreaterThan(int value, int threshold)
-            => Injector.Inject<bool>(BuildEvenExpression());
+            => Injector.Inject<bool>(BuildEvenExpression(), value, threshold);
 
         static LambdaExpression BuildEvenExpression()
         {
-            var p0 = Expression.Parameter(typeof(int), "value");
-            var p1 = Expression.Parameter(typeof(int), "threshold");
+            var p0 = Expression.Parameter(typeof(int));
+            var p1 = Expression.Parameter(typeof(int));
             return Expression.Lambda(Expression.GreaterThan(p0, p1), p0, p1);
         }
 

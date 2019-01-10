@@ -7,7 +7,7 @@ using System.Text;
 
 namespace XIntric.ExpressionInjection
 {
-    public class InjectorTrapper : ExpressionVisitor, Injector.ITrapper
+    internal class InjectorTrapper : ExpressionVisitor, Injector.ITrapper
     {
 
         public InjectorTrapper()
@@ -15,13 +15,21 @@ namespace XIntric.ExpressionInjection
 
         }
 
-        public object Register(LambdaExpression expr)
+        public object Register(LambdaExpression expr, object[] arguments)
         {
             ReplacementExpression = expr;
             return GetDefault(expr.ReturnType);
         }
 
+        public object Register<TRet>(Expression<Func<TRet>> expr)
+        {
+            ReplacementExpression = expr;
+            return GetDefault(expr.ReturnType);
+        }
+
+
         LambdaExpression ReplacementExpression;
+
 
         public override Expression Visit(Expression node)
         {
@@ -47,7 +55,6 @@ namespace XIntric.ExpressionInjection
                 if (ReplacementExpression != null) throw new InvalidOperationException("Detected trap collision.");
 
 
-
                 var arguments = node.Arguments.ToList();
 
 
@@ -70,6 +77,7 @@ namespace XIntric.ExpressionInjection
                 node.Method.Invoke(null, parameterinfo.Select(x => x.EvaluationArgument).ToArray());
 
                 var replacementbody = ReplacementExpression.Body;
+                var parameterIndex = ReplacementExpression.Parameters.Select((p, i) => new { p, i }).ToDictionary(x => x.p, x => x.i);
 
                 ReplacementExpression = null;
 
@@ -92,8 +100,8 @@ namespace XIntric.ExpressionInjection
                     })
                     .ReplaceParameter(paramnode =>
                     {
-                        var candidate = parameterinfo.SingleOrDefault(x => x.Parameter.Name == paramnode.Name);
-                        if (candidate == null) return null;
+                        if (!parameterIndex.TryGetValue(paramnode, out var pindex)) return null;
+                        var candidate = parameterinfo[pindex];
                         if (candidate.EvalOnInject)
                         {
                             return Expression.Constant(candidate.EvaluationArgument, candidate.Parameter.ParameterType);
@@ -154,5 +162,6 @@ namespace XIntric.ExpressionInjection
             }
             return null;
         }
+
     }
 }

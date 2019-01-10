@@ -96,7 +96,6 @@ namespace XIntric.ExpressionInjection.Tests
             [Fact]
             public void UseInjectableMethodToGetOverview()
             {
-
                 var stats = Airplanes.AsQueryable()
                     .EnableInjection()
                     .Select(ap => new
