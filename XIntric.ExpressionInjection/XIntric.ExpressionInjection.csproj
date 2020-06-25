@@ -17,6 +17,14 @@
     <PackageTags>Expression Injection EntityFramework Linq2Sql Sql</PackageTags>
     <SignAssembly>false</SignAssembly>
     <Configurations>Debug;Release</Configurations>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
 
 </Project>
